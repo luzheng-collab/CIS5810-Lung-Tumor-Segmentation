@@ -22,7 +22,7 @@ All models are trained on uniformly preprocessed CT volumes:
 
 ## ⭐ Linear UNETR — Memory-Efficient Transformer for 3D Segmentation
 
-Standard UNETR's multi-head self-attention scales quadratically with sequence length ($\mathcal{O}(N^2)$), making it capacity-heavy and memory-intensive for 3D medical volumes. Linear UNETR addresses this with $\mathcal{O}(N)$ attention, enabling larger patch sizes and higher batch sizes under the same GPU budget — a critical advantage for real-world deployment where GPU resources are constrained.
+Standard UNETR's multi-head self-attention scales quadratically with sequence length $\mathcal{O}(N^2)$, making it capacity-heavy and memory-intensive for 3D medical volumes. Linear UNETR addresses this with $\mathcal{O}(N)$ attention, enabling larger patch sizes and higher batch sizes under the same GPU budget — a critical advantage for real-world deployment where GPU resources are constrained.
 
 ## Evaluation
 
