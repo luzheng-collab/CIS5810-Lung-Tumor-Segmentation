@@ -1,11 +1,15 @@
 # Volumetric CT Lung Tumor Segmentation
 
-A fully automated pipeline for 3D lung tumor GTV (GTVp) segmentation from CT scans, benchmarking multiple segmentation architectures — from classic CNNs to Transformer‑based models — under a unified preprocessing and evaluation framework.
+A fully automated pipeline for 3D lung tumor GTV (GTVp) segmentation from CT scans, benchmarking multiple segmentation architectures — from classic CNNs to Transformer-based models — under a unified preprocessing and evaluation framework.
 
-- **2D U-Net** — Slice-based segmentation with class-balanced sampling and ensemble learning restacked to 3D
-- **3D U-Net** — Volumetric convolutions with sliding-window patch training
-- **UNETR** — Hybrid 3D segmentation architecture (Hatamizadeh et al., 2022) with ViT encoder + convolutional decoder
-- **Linear UNETR** — Memory-efficient UNETR variant with linear attention with Transformer encoder + convolutional decoder
+## Models
+
+| Architecture | Paradigm | Key Features |
+|---|---|---|
+| **2D U-Net** | Slice-based CNN | Class-balanced sampling, ensemble learning restacked to 3D |
+| **3D U-Net** | Volumetric CNN | Sliding-window 3D patch training |
+| **UNETR** | CNN–Transformer | ViT encoder + convolutional decoder (Hatamizadeh et al., 2022) |
+| **Linear UNETR** | Linear-attention Transformer | $\mathcal{O}(N)$ attention, Transformer encoder + convolutional decoder |
 
 ## Pipeline
 
@@ -16,32 +20,36 @@ All models are trained on uniformly preprocessed CT volumes:
 3. **Lung-focused cropping** with aligned CT–contour pairs
 4. **Patch/slice extraction** — 2D: class-balanced slice sampling; 3D: sliding-window overlapping patches
 
-## ⭐ Linear UNETR: Memory-Efficient Transformer for 3D Segmentation
+## ⭐ Linear UNETR — Memory-Efficient Transformer for 3D Segmentation
 
- A memory-efficient variant of the standard UNETR that replaces quadratic self-attention with linear attention, substantially reducing peak GPU memory while preserving segmentation quality.
+Standard self-attention scales **quadratically** with sequence length, making it prohibitively expensive for 3D medical volumes:
 
-Standard UNETR's multi-head self-attention scales quadratically with sequence length ($\mathcal{O}(N^2)$), making it capacity-heavy and memory-intensive for 3D medical volumes. Linear UNETR addresses this with $\mathcal{O}(N)$ attention, enabling training on larger patch sizes and higher batch sizes under the same GPU budget.
+$$\mathcal{O}(N^2) \;\longrightarrow\; \mathcal{O}(N)$$
+
+Linear UNETR replaces quadratic self-attention with **linear attention**, substantially reducing peak GPU memory while preserving segmentation quality. This enables training on larger patch sizes and higher batch sizes under the same GPU budget.
 
 **Benefits**
 - Lower peak GPU memory
 - Larger 3D patch sizes
 - Higher batch sizes
-- More stable training on clinical‑scale volumes
+- More stable training on clinical-scale volumes
+
+Linear UNETR demonstrates that linear attention is a practical path to scaling Transformer-based 3D segmentation for real-world deployment.
 
 ## Evaluation
 
 Performance is assessed using:
 
 | Metric | Description |
-|--------|-------------|
-| **Dice** | Dice similarity coefficient |
-| **IoU** | Intersection over Union |
-| **HD95** | 95th percentile Hausdorff distance |
+|---|---|
+| **Dice ↑** | Dice similarity coefficient |
+| **IoU ↑** | Intersection over Union |
+| **HD95 ↓** | 95th percentile Hausdorff distance |
 
 ## Key Insights
 
 | Dimension | 2D U-Net | 3D Models (UNet, UNETR) |
-|-----------|----------|------------------------|
+|---|---|---|
 | **Data efficiency** | Benefits from abundant slices, strong in-plane contrast | Needs larger cohorts for full potential |
 | **Spatial context** | Limited to slice-wise | Rich volumetric continuity |
 | **Sensitivity** | Stable baseline | More sensitive to patch sampling, class imbalance, anisotropic resampling |
@@ -50,7 +58,7 @@ Performance is assessed using:
 ## Project Structure
 
 ```
-├── Data.ipynb              # Data loading & preprocessing
+├── Data.ipynb                    # Data loading & preprocessing
 ├── 2D U-Net/
 │   ├── Dataset.ipynb
 │   ├── Preprocessing.ipynb
@@ -98,10 +106,12 @@ jupyter notebook "Linear UNETR/03-Train_unetr.ipynb"
 
 ## Dataset
 
-- **150 patients** with LA-NSCLC
-- Anisotropic CT spacing
-- Paired CT volumes + GTVp contours
-- Limited GPU memory constraints drive architectural choices
+| Attribute | Detail |
+|---|---|
+| **Cohort** | 150 patients with LA-NSCLC |
+| **Imaging** | CT volumes with anisotropic spacing |
+| **Annotations** | Paired CT volumes + GTVp contours |
+| **Constraint** | Limited GPU memory drives architectural choices |
 
 ## Conclusion
 
@@ -109,4 +119,4 @@ Architecture, data regime, and training strategy jointly shape segmentation qual
 
 ## References
 
-- Hatamizadeh et al. (2022). UNETR: Transformers for 3D Medical Image Segmentation. *WACV 2022*.
+- Hatamizadeh, A. et al. (2022). UNETR: Transformers for 3D Medical Image Segmentation. *Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)*.
