@@ -1,0 +1,27 @@
+# Jupyter
+.ipynb_checkpoints/
+*.pyc
+__pycache__/
+
+# Python
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Data
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.pkl
+data/
+datasets/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
