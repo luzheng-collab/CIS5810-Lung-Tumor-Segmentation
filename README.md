@@ -4,12 +4,12 @@ Volumetric CT lung tumor segmentation is essential for radiotherapy (RT) plannin
 
 ## Motivation
 
-This project develops a fully automated pipeline for primary lung tumor GTV (GTVp) segmentation from 3D CT scans and systematically compares three deep learning paradigms:
+This project develops a fully automated pipeline for lung tumor GTV (GTVp) segmentation from 3D CT scans and systematically compares different model architectures:
 
 - **2D U-Net** — Slice-based segmentation with class-balanced sampling and 5-fold ensemble restacked to 3D
 - **3D U-Net** — Volumetric convolutions with sliding-window patch training
 - **UNETR** — Hybrid CNN-Transformer (Hatamizadeh et al., 2022) with ViT encoder + convolutional decoder
-- **Linear UNETR** — Memory-efficient variant with linear attention, a key contribution of this work
+- **Linear UNETR** — Memory-efficient variant with linear attention
 
 ## Pipeline
 
@@ -20,11 +20,9 @@ All models are trained on uniformly preprocessed CT volumes:
 3. **Lung-focused cropping** with aligned CT–contour pairs
 4. **Patch/slice extraction** — 2D: class-balanced slice sampling; 3D: sliding-window overlapping patches
 
-Ensemble predictions are evaluated both in preprocessed space and after resampling back to original CT space.
-
 ## ⭐ Linear UNETR: Memory-Efficient Transformer for 3D Segmentation
 
-A key contribution of this project is the **Linear UNETR** — a memory-efficient variant of the standard UNETR that replaces quadratic self-attention with linear attention, substantially reducing peak GPU memory while preserving segmentation quality.
+A memory-efficient variant of the standard UNETR that replaces quadratic self-attention with linear attention, substantially reducing peak GPU memory while preserving segmentation quality.
 
 ### Why It Matters
 
@@ -36,12 +34,6 @@ Standard UNETR's multi-head self-attention scales quadratically with sequence le
 |-------|-------------------|---------------|---------------------|--------------------|--------------------|
 | Standard UNETR | 56,013 | 3.99×10¹⁵ | 4.933 | 0.597 | 0.431 |
 | **Linear UNETR** | **54,999** | 3.99×10¹⁵ | 4.938 | **0.597** | 0.424 |
-
-**Key findings:**
-
-- **Memory reduction**: Linear UNETR lowers peak memory usage during training, achieved specifically through the linear attention mechanism rather than changes in FLOPs or latency (which remain consistent due to bottlenecks in MLP layers within attention heads and 3D convolution blocks).
-- **Training stability**: Despite reduced computational complexity, Linear UNETR demonstrates training dynamics closely matching the baseline UNETR. Notably, Linear UNETR maintains a *higher* training Dice standard deviation (0.128 vs. 0.133), indicating more stable convergence.
-- **Performance parity**: Best-epoch validation Dice is identical (0.597), while average validation Dice over 100 epochs is marginally lower (0.424 vs. 0.431) — a negligible trade-off for the memory savings gained.
 
 ### Implications
 
@@ -58,13 +50,6 @@ Performance is assessed using:
 | **HD95** | 95th percentile Hausdorff distance |
 
 Evaluation at slice, patch, and whole-volume levels.
-
-### Test-Time Augmentation (UNETR)
-
-For UNETR, flip-based TTA was tested with validation-selected probability thresholds:
-- **No improvement** on validation Dice
-- **Small Dice & IoU gains** on test set with tuned threshold
-- **Markedly worse HD95** — TTA expands tumor coverage but introduces boundary outliers, making it unsuitable when boundary precision is critical
 
 ## Key Insights
 
