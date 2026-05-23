@@ -1,10 +1,6 @@
-# CIS5810 Final Project: Automated Lung Tumor GTV Segmentation from 3D CT
+# Volumetric CT Lung Tumor Segmentation
 
-Volumetric CT lung tumor segmentation is essential for radiotherapy (RT) planning and quantitative imaging, yet manual gross tumor volume (GTV) delineation in locally advanced non-small cell lung cancer (LA-NSCLC) remains labor-intensive and variable across clinicians and institutions. Automated segmentation can reduce workload, standardize contours, and unlock large-scale radiomics and dosiomics analyses.
-
-## Motivation
-
-This project develops a fully automated pipeline for lung tumor GTV (GTVp) segmentation from 3D CT scans and systematically compares different model architectures:
+This project develops a fully automated pipeline for lung tumor GTV (GTVp) segmentation from 3D CT scans and systematically compares four model architectures:
 
 - **2D U-Net** — Slice-based segmentation with class-balanced sampling and 5-fold ensemble restacked to 3D
 - **3D U-Net** — Volumetric convolutions with sliding-window patch training
@@ -26,7 +22,7 @@ A memory-efficient variant of the standard UNETR that replaces quadratic self-at
 
 ### Why It Matters
 
-Standard UNETR's multi-head self-attention scales quadratically with sequence length ($\mathcal{O}(N^2)$), making it capacity-heavy and memory-intensive for 3D medical volumes. Linear UNETR addresses this with $\mathcal{O}(N)$ attention, enabling training on larger patch sizes and higher batch sizes under the same GPU budget.
+Standard UNETR's multi-head self-attention scales quadratically with sequence length ($\mathcal{O}(N^2)$), making it capacity-heavy and memory-intensive for 3D medical volumes. Linear UNETR addresses this with $\mathcal{O}(N)$ attention, enabling larger patch sizes and higher batch sizes under the same GPU budget.
 
 ### Efficiency Benchmarks
 
@@ -37,7 +33,7 @@ Standard UNETR's multi-head self-attention scales quadratically with sequence le
 
 ### Implications
 
-The Linear UNETR shows that linear attention provides a viable path to scale Transformer-based 3D segmentation to larger volumes, higher resolutions, and larger cohorts — critical for real-world clinical deployment where GPU resources are constrained.
+Linear UNETR demonstrates that linear attention provides a viable path to scale Transformer-based 3D segmentation to larger volumes — critical for real-world clinical deployment where GPU resources are constrained.
 
 ## Evaluation
 
@@ -49,7 +45,7 @@ Performance is assessed using:
 | **IoU** | Intersection over Union |
 | **HD95** | 95th percentile Hausdorff distance |
 
-Evaluation at slice, patch, and whole-volume levels.
+Evaluation is performed at slice, patch, and whole-volume levels.
 
 ## Key Insights
 
