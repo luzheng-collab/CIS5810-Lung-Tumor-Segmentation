@@ -16,23 +16,17 @@ All models are trained on uniformly preprocessed CT volumes:
 3. **Lung-focused cropping** with aligned CT–contour pairs
 4. **Patch/slice extraction** — 2D: class-balanced slice sampling; 3D: sliding-window overlapping patches
 
-## ⭐ Linear UNETR: Memory‑Efficient Transformer for 3D Segmentation
+## ⭐ Linear UNETR: Memory-Efficient Transformer for 3D Segmentation
 
-Standard Transformer attention scales quadratically:
+ A memory-efficient variant of the standard UNETR that replaces quadratic self-attention with linear attention, substantially reducing peak GPU memory while preserving segmentation quality.
 
-$$\mathcal{O}(N^2)$$
-
-Linear attention reduces this to:
-
-$$\mathcal{O}(N)$$
+Standard UNETR's multi-head self-attention scales quadratically with sequence length ($\mathcal{O}(N^2)$), making it capacity-heavy and memory-intensive for 3D medical volumes. Linear UNETR addresses this with $\mathcal{O}(N)$ attention, enabling training on larger patch sizes and higher batch sizes under the same GPU budget.
 
 **Benefits**
 - Lower peak GPU memory
 - Larger 3D patch sizes
 - Higher batch sizes
 - More stable training on clinical‑scale volumes
-
-Linear UNETR demonstrates that linear attention is a practical path to scaling Transformer‑based 3D segmentation for real‑world deployment.
 
 ## Evaluation
 
