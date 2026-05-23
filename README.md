@@ -22,11 +22,9 @@ All models are trained on uniformly preprocessed CT volumes:
 
 ## ⭐ Linear UNETR — Memory-Efficient Transformer for 3D Segmentation
 
-Standard self-attention scales **quadratically** with sequence length, making it prohibitively expensive for 3D medical volumes:
+Standard self-attention scales **quadratically** with sequence length ($\mathcal{O}(N^2)$), making it prohibitively expensive for 3D medical volumes. Linear attention reduces this to $\mathcal{O}(N)$.
 
-$$\mathcal{O}(N^2) \;\longrightarrow\; \mathcal{O}(N)$$
-
-Linear UNETR replaces quadratic self-attention with **linear attention**, substantially reducing peak GPU memory while preserving segmentation quality. This enables training on larger patch sizes and higher batch sizes under the same GPU budget.
+Linear UNETR replaces this quadratic self-attention with **linear attention**, substantially reducing peak GPU memory while preserving segmentation quality. This enables larger patch sizes and higher batch sizes under the same GPU budget.
 
 **Benefits**
 - Lower peak GPU memory
