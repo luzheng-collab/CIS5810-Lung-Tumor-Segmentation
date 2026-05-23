@@ -22,17 +22,7 @@ All models are trained on uniformly preprocessed CT volumes:
 
 ## ⭐ Linear UNETR — Memory-Efficient Transformer for 3D Segmentation
 
-Standard self-attention scales **quadratically** with sequence length ($\mathcal{O}(N^2)$), making it prohibitively expensive for 3D medical volumes. Linear attention reduces this to $\mathcal{O}(N)$.
-
-Linear UNETR replaces this quadratic self-attention with **linear attention**, substantially reducing peak GPU memory while preserving segmentation quality. This enables larger patch sizes and higher batch sizes under the same GPU budget.
-
-**Benefits**
-- Lower peak GPU memory
-- Larger 3D patch sizes
-- Higher batch sizes
-- More stable training on clinical-scale volumes
-
-Linear UNETR demonstrates that linear attention is a practical path to scaling Transformer-based 3D segmentation for real-world deployment.
+Standard UNETR's multi-head self-attention scales quadratically with sequence length ($\mathcal{O}(N^2)$), making it capacity-heavy and memory-intensive for 3D medical volumes. Linear UNETR addresses this with $\mathcal{O}(N)$ attention, enabling larger patch sizes and higher batch sizes under the same GPU budget — a critical advantage for real-world deployment where GPU resources are constrained.
 
 ## Evaluation
 
@@ -44,14 +34,6 @@ Performance is assessed using:
 | **IoU ↑** | Intersection over Union |
 | **HD95 ↓** | 95th percentile Hausdorff distance |
 
-## Key Insights
-
-| Dimension | 2D U-Net | 3D Models (UNet, UNETR) |
-|---|---|---|
-| **Data efficiency** | Benefits from abundant slices, strong in-plane contrast | Needs larger cohorts for full potential |
-| **Spatial context** | Limited to slice-wise | Rich volumetric continuity |
-| **Sensitivity** | Stable baseline | More sensitive to patch sampling, class imbalance, anisotropic resampling |
-| **Capacity** | Lightweight | Transformer-based models are capacity-heavy; need careful optimization |
 
 ## Project Structure
 
