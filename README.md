@@ -13,7 +13,7 @@ A fully automated pipeline for 3D lung tumor GTV (GTVp) segmentation from CT sca
 
 ## Pipeline
 
-All models are trained on uniformly preprocessed CT volumes:
+All models are trained with preprocessed CT volumes with:
 
 1. **Intensity normalization**
 2. **Resampling** to common voxel spacing
